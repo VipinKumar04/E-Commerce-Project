@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Add Product</title>
+    <link rel="stylesheet" href="/site.css">
+</head>
+<body class="page-admin">
+    <%- include("partials/header") %>
+
+    <main class="admin-main admin-form-page">
+        <a class="admin-back-link" href="/admin">Back to dashboard</a>
+        <p class="admin-eyebrow">STORE INVENTORY</p>
+        <h1>Add a product</h1>
+
+        <% if(message){ %>
+            <p class="admin-message" role="alert"><%= message %></p>
+        <% } %>
+
+        <form action="/admin/products" method="POST" class="admin-product-form">
+            <label for="name">Product name</label>
+            <input id="name" name="name" type="text" required>
+
+            <label for="image">Product image URL</label>
+            <input id="image" name="image" type="url" required>
+
+            <label for="description">Description</label>
+            <textarea id="description" name="description" rows="5" required></textarea>
+
+            <label for="category">Category</label>
+            <input id="category" name="category" type="text" required>
+
+            <div class="admin-form-row">
+                <div>
+                    <label for="price">Price</label>
+                    <input id="price" name="price" type="number" min="0.01" step="0.01" required>
+                </div>
+                <div>
+                    <label for="stock">Stock quantity</label>
+                    <input id="stock" name="stock" type="number" min="0" step="1" required>
+                </div>
+            </div>
+
+            <button type="submit">Save product</button>
+        </form>
+    </main>
+
+    <%- include("partials/footer") %>
+</body>
+</html>

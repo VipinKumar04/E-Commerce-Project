@@ -1,0 +1,13 @@
+<footer class="site-footer">
+    <a class="footer-brand" href="/products">E-commerce</a>
+    <nav aria-label="Footer navigation">
+        <a href="/products">Shop</a>
+        <% if(isLoggedIn){ %>
+            <a href="/profile">Profile</a>
+        <% }else{ %>
+            <a href="/login">Log in</a>
+            <a href="/signup">Sign up</a>
+        <% } %>
+    </nav>
+    <span class="copyright">&copy; E-commerce</span>
+</footer>

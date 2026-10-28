@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delivery address</title>
+    <link rel="stylesheet" href="/site.css">
+</head>
+<body class="page-checkout">
+    <%- include("partials/header") %>
+
+    <main class="checkout-main">
+        <p class="checkout-step">Checkout · Step 1 of 2</p>
+        <h1>Delivery address</h1>
+        <p class="checkout-intro">Choose a saved address or add a new one.</p>
+
+        <% if(message){ %>
+            <p class="checkout-message"><%= message %></p>
+        <% } %>
+
+        <% if(savedAddresses.length > 0){ %>
+            <section class="saved-addresses">
+                <h2>Saved addresses</h2>
+                <form action="/cart/checkout/saved-address" method="POST">
+                    <% savedAddresses.forEach((address,index)=>{ %>
+                        <label class="saved-address-option">
+                            <input type="radio" name="addressId" value="<%= address._id %>" <%= index === 0 ? "checked" : "" %> required>
+                            <span>
+                                <strong><%= address.fullName %></strong><br>
+                                <%= address.phone %><br>
+                                <%= address.street %>, <%= address.city %><br>
+                                <%= address.state %> <%= address.postalCode %>
+                            </span>
+                        </label>
+                    <% }); %>
+                    <button type="submit">Use selected address</button>
+                </form>
+            </section>
+        <% } %>
+
+        <details class="checkout-new-address" <%= savedAddresses.length === 0 || message ? "open" : "" %>>
+            <summary><%= savedAddresses.length > 0 ? "Add a new address" : "Enter delivery address" %></summary>
+            <form class="checkout-form" action="/cart/checkout/address" method="POST">
+                <label>
+                    Full name
+                    <input type="text" name="fullName" value="<%= formData.fullName || '' %>" required>
+                </label>
+                <label>
+                    Phone number
+                    <input type="tel" name="phone" value="<%= formData.phone || '' %>" required>
+                </label>
+                <label class="checkout-wide-field">
+                    Street address
+                    <input type="text" name="street" value="<%= formData.street || '' %>" required>
+                </label>
+                <label>
+                    City
+                    <input type="text" name="city" value="<%= formData.city || '' %>" required>
+                </label>
+                <label>
+                    State
+                    <input type="text" name="state" value="<%= formData.state || '' %>" required>
+                </label>
+                <label>
+                    Postal code
+                    <input type="text" name="postalCode" value="<%= formData.postalCode || '' %>" required>
+                </label>
+                <button class="checkout-wide-field" type="submit">Save address and review order</button>
+            </form>
+        </details>
+    </main>
+
+    <%- include("partials/footer") %>
+</body>
+</html>

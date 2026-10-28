@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= product ? product.name : "Product not found" %></title>
+    <link rel="stylesheet" href="/site.css">
+</head>
+<body class="page-product">
+    <%- include("partials/header") %>
+
+    <main>
+        <p><a href="/products">Back to products</a></p>
+
+        <% if(product){ %>
+            <div class="details">
+                <img src="<%= product.image %>" alt="<%= product.name %>">
+
+                <section>
+                    <h1><%= product.name %></h1>
+                    <p><%= product.description %></p>
+                    <p class="price">₹<%= product.price %></p>
+                    <p>Category: <%= product.category %></p>
+                    <form action="/cart/add/<%= product._id %>" method="POST">
+                        <button class="cart-button" type="submit">Add to cart</button>
+                    </form>
+                </section>
+            </div>
+        <% }else{ %>
+            <h1>Product not found</h1>
+        <% } %>
+    </main>
+    <%- include("partials/footer") %>
+</body>
+</html>

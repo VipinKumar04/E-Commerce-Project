@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Membership</title>
+    <link rel="stylesheet" href="/site.css">
+</head>
+<body class="page-membership">
+    <%- include("partials/header") %>
+
+    <main class="membership-main">
+        <p class="membership-kicker">THE MEMBERSHIP CLUB</p>
+        <h1>More room for good choices.</h1>
+        <p class="membership-intro">Buy a plan, then choose when to use a credit. Each credit gives one order free delivery and a discount.</p>
+        <p class="membership-intro">Membership lasts 30 days. Unused credits expire when the membership expires.</p>
+
+        <% if(message){ %>
+            <p class="membership-message"><%= message %></p>
+        <% } %>
+
+        <% if(user && user.membershipExpiresAt && new Date(user.membershipExpiresAt) > new Date()){ %>
+            <section class="membership-balance">
+                <strong><%= user.membershipCredits %></strong> credits available
+                <span>Active until <%= new Date(user.membershipExpiresAt).toLocaleDateString() %></span>
+            </section>
+        <% } %>
+
+        <section class="membership-plans">
+            <% Object.keys(plans).forEach((planCode)=>{ const plan = plans[planCode]; %>
+                <article class="membership-card">
+                    <p class="membership-plan-name"><%= plan.name %></p>
+                    <h2>₹<%= plan.price %></h2>
+                    <p><strong><%= plan.credits %> credits</strong> for 30 days</p>
+                    <ul>
+                        <li>Use one credit on one order</li>
+                        <li>That order gets free delivery</li>
+                        <li><%= plan.discountPercent %>% off that order</li>
+                    </ul>
+                    <% if(isLoggedIn){ %>
+                        <button class="membership-buy-button" data-plan-code="<%= planCode %>" type="button">Choose <%= plan.name %></button>
+                    <% }else{ %>
+                        <a class="membership-login-link" href="/login">Log in to choose</a>
+                    <% } %>
+                </article>
+            <% }); %>
+        </section>
+        <p id="membershipMessage" class="membership-message" role="status"></p>
+    </main>
+
+    <%- include("partials/footer") %>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="/membership.js"></script>
+</body>
+</html>

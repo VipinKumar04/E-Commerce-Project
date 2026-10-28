@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop | E-commerce</title>
+    <link rel="stylesheet" href="/site.css">
+</head>
+<body class="page-home">
+    <%- include("partials/header") %>
+
+    <main>
+        <section class="hero">
+            <div class="hero-copy">
+                <p class="eyebrow">THE CURRENT COLLECTION</p>
+                <h1>Built to<br>stand out.</h1>
+                <p>Explore streetwear made for everyday movement.</p>
+                <div class="hero-actions">
+                    <button type="button" data-scroll-target="shop-products">Shop the collection</button>
+                    <button type="button" data-scroll-target="shop-products">Explore products</button>
+                </div>
+            </div>
+            <div class="hero-image-wrap">
+                <img id="heroImage" alt="" hidden>
+            </div>
+        </section>
+
+        <section id="shop-products" class="products-section">
+            <p class="eyebrow">SHOP THE COLLECTION</p>
+            <div class="section-heading">
+                <div>
+                    <h2>All products</h2>
+                    <p>Explore every piece in the collection.</p>
+                </div>
+            </div>
+
+            <section id="productGrid" class="product-grid" aria-label="Products"></section>
+            <p id="productMessage" role="status"></p>
+            <button id="loadMoreButton" type="button" hidden>Load more</button>
+        </section>
+    </main>
+
+    <section class="campaign-banner">
+        <h2>No rules. Just movement.</h2>
+        <button type="button" data-scroll-target="shop-products">Explore the collection</button>
+    </section>
+
+    <section class="brand-statement">
+        <p class="eyebrow">E-COMMERCE</p>
+        <h2>Your style. Your move.</h2>
+        <p>Take a look through the products in our current collection.</p>
+    </section>
+
+    <%- include("partials/footer") %>
+    <script src="/script.js"></script>
+</body>
+</html>

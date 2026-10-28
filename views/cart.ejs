@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your cart</title>
+    <link rel="stylesheet" href="/site.css">
+</head>
+<body class="page-cart">
+    <%- include("partials/header") %>
+
+    <main>
+        <h1>Your cart</h1>
+
+        <% if(cartItems.length === 0){ %>
+            <div class="empty-cart">
+                <p>Your cart is empty.</p>
+                <a href="/products">Continue shopping</a>
+            </div>
+        <% }else{ %>
+            <section aria-label="Cart items">
+                <% cartItems.forEach((item)=>{ %>
+                    <div class="cart-item">
+                        <img src="<%= item.product.image %>" alt="<%= item.product.name %>" loading="lazy">
+                        <div>
+                            <h2><%= item.product.name %></h2>
+                            <p>₹<%= item.product.price %></p>
+                            <div class="cart-quantity">
+                                <form action="/cart/quantity/<%= item.product._id %>" method="POST">
+                                    <button type="submit" name="change" value="decrease">−</button>
+                                </form>
+                                <span>Quantity: <%= item.quantity %></span>
+                                <form action="/cart/quantity/<%= item.product._id %>" method="POST">
+                                    <button type="submit" name="change" value="increase">+</button>
+                                </form>
+                            </div>
+                        </div>
+                        <form class="cart-remove-form" action="/cart/remove/<%= item.product._id %>" method="POST">
+                            <button class="cart-remove-button" type="submit">Remove</button>
+                        </form>
+                    </div>
+                <% }); %>
+            </section>
+            <section class="cart-checkout">
+                <form action="/cart/checkout" method="GET">
+                    <button type="submit">Checkout</button>
+                </form>
+            </section>
+        <% } %>
+    </main>
+    <%- include("partials/footer") %>
+</body>
+</html>

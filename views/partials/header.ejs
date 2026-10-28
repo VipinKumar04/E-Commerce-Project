@@ -1,0 +1,32 @@
+<header class="site-header">
+    <a class="site-name" href="/products">E-commerce</a>
+
+    <nav class="desktop-navigation" aria-label="Main navigation">
+        <a href="/products">Shop</a>
+        <a href="/cart">Cart</a>
+        <a href="/membership">Membership</a>
+        <% if(isLoggedIn){ %>
+            <a href="/profile">Profile</a>
+            <a href="/orders">Your orders</a>
+        <% }else{ %>
+            <a href="/login">Log in</a>
+            <a href="/signup">Sign up</a>
+        <% } %>
+    </nav>
+
+    <details class="mobile-menu">
+        <summary>Menu</summary>
+        <nav class="mobile-navigation" aria-label="Mobile navigation">
+            <a href="/products">Shop</a>
+            <a href="/cart">Cart</a>
+            <a href="/membership">Membership</a>
+            <% if(isLoggedIn){ %>
+                <a href="/profile">Profile</a>
+                <a href="/orders">Your orders</a>
+            <% }else{ %>
+                <a href="/login">Log in</a>
+                <a href="/signup">Sign up</a>
+            <% } %>
+        </nav>
+    </details>
+</header>

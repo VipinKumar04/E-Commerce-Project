@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="/site.css">
+</head>
+<body class="page-admin">
+    <%- include("partials/header") %>
+
+    <main class="admin-main">
+        <div class="admin-heading">
+            <div>
+                <p class="admin-eyebrow">STORE MANAGEMENT</p>
+                <h1>Admin dashboard</h1>
+            </div>
+            <a class="admin-add-link" href="/admin/products/new">Add product</a>
+        </div>
+
+        <section class="admin-section">
+            <div class="admin-section-heading">
+                <div>
+                    <p class="admin-eyebrow">ORDER REPORT</p>
+                    <h2>Sales summary</h2>
+                </div>
+
+                <form action="/admin" method="GET" class="admin-period-form">
+                    <label for="period">Show sales</label>
+                    <select id="period" name="period">
+                        <option value="daily" <%= period === "daily" ? "selected" : "" %>>Today</option>
+                        <option value="weekly" <%= period === "weekly" ? "selected" : "" %>>Last 7 days</option>
+                        <option value="monthly" <%= period === "monthly" ? "selected" : "" %>>This month</option>
+                    </select>
+                    <button type="submit">Update</button>
+                </form>
+            </div>
+
+            <div class="admin-summary-cards">
+                <article class="admin-summary-card">
+                    <p>Paid orders</p>
+                    <strong><%= paidOrderCount %></strong>
+                </article>
+                <article class="admin-summary-card">
+                    <p>Total sales</p>
+                    <strong>₹<%= salesTotal %></strong>
+                </article>
+            </div>
+
+            <h3>Sales by category</h3>
+            <% if(categorySales.length === 0){ %>
+                <p class="admin-empty">No paid orders in this period.</p>
+            <% }else{ %>
+                <div class="admin-table-wrap">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Category</th>
+                                <th>Items sold</th>
+                                <th>Product sales</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% categorySales.forEach((category)=>{ %>
+                                <tr>
+                                    <td><%= category.name %></td>
+                                    <td><%= category.quantity %></td>
+                                    <td>₹<%= category.total %></td>
+                                </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                </div>
+            <% } %>
+        </section>
+
+        <section class="admin-section">
+            <div class="admin-section-heading">
+                <div>
+                    <p class="admin-eyebrow">INVENTORY</p>
+                    <h2>Stock by category</h2>
+                </div>
+            </div>
+
+            <% if(categoryStock.length === 0){ %>
+                <p class="admin-empty">No products have been added.</p>
+            <% }else{ %>
+                <div class="admin-table-wrap">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Category</th>
+                                <th>Products</th>
+                                <th>Units in stock</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% categoryStock.forEach((category)=>{ %>
+                                <tr>
+                                    <td><%= category.name %></td>
+                                    <td><%= category.productCount %></td>
+                                    <td><%= category.stock %></td>
+                                </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                </div>
+            <% } %>
+        </section>
+    </main>
+
+    <%- include("partials/footer") %>
+</body>
+</html>

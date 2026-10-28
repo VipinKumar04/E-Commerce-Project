@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review your order</title>
+    <link rel="stylesheet" href="/site.css">
+</head>
+<body class="page-checkout">
+    <%- include("partials/header") %>
+
+    <main class="checkout-main">
+        <p class="checkout-step">Checkout · Step 2 of 2</p>
+        <h1>Review your order</h1>
+
+        <section class="checkout-address-card">
+            <h2>Delivering to</h2>
+            <p><%= order.address.fullName %></p>
+            <p><%= order.address.phone %></p>
+            <p><%= order.address.street %>, <%= order.address.city %></p>
+            <p><%= order.address.state %> <%= order.address.postalCode %></p>
+        </section>
+
+        <section class="checkout-items" aria-label="Order items">
+            <% order.items.forEach((item)=>{ %>
+                <div class="checkout-item">
+                    <img src="<%= item.image %>" alt="<%= item.name %>" loading="lazy">
+                    <div>
+                        <h2><%= item.name %></h2>
+                        <p>₹<%= item.price %> × <%= item.quantity %></p>
+                    </div>
+                    <p>₹<%= item.price * item.quantity %></p>
+                </div>
+            <% }); %>
+        </section>
+
+        <section class="checkout-totals" aria-label="Payment summary">
+            <p><span>Subtotal</span><span>₹<%= order.subtotal %></span></p>
+            <% if(order.membershipDiscount > 0){ %>
+                <p><span>Membership discount (<%= order.membershipPlan === "premium" ? "10%" : "5%" %>)</span><span>-₹<%= order.membershipDiscount %></span></p>
+            <% } %>
+            <p><span>Tax (5%)</span><span>₹<%= order.taxAmount %></span></p>
+            <p><span>Delivery</span><span>₹<%= order.deliveryFee %></span></p>
+            <p class="checkout-grand-total"><span>Total</span><span>₹<%= order.totalAmount %></span></p>
+        </section>
+
+        <% if(order.creditsUsed > 0){ %>
+            <div class="checkout-credit-note">
+                <p>One membership credit is applied. Delivery is free and the membership discount is included.</p>
+                <form action="/cart/remove-membership-credit/<%= order._id %>" method="POST">
+                    <button type="submit">Remove credit</button>
+                </form>
+            </div>
+        <% }else if(membershipActive && membershipCredits > 0){ %>
+            <div class="checkout-credit-note">
+                <p>You have <strong><%= membershipCredits %></strong> membership credits available.</p>
+                <form action="/cart/membership-credit/<%= order._id %>" method="POST">
+                    <button type="submit">Use 1 credit for free delivery + discount</button>
+                </form>
+            </div>
+        <% } %>
+
+        <button class="checkout-pay-button" id="checkoutButton" data-order-id="<%= order._id %>" type="button">
+            Continue to payment
+        </button>
+        <p id="checkoutMessage" class="checkout-message" role="status"></p>
+    </main>
+
+    <%- include("partials/footer") %>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="/checkout.js"></script>
+</body>
+</html>

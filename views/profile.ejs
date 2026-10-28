@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Profile</title>
+    <link rel="stylesheet" href="/site.css">
+</head>
+<body class="page-profile">
+    <%- include("partials/header",{ username: username }) %>
+
+    <main>
+        <h1>Your profile</h1>
+        <div class="row"><strong>Username:</strong> <%= username %></div>
+        <div class="row"><strong>Email:</strong> <%= email %></div>
+        <section class="profile-membership">
+            <h2>Membership</h2>
+            <% if(membershipPlan && membershipExpiresAt && new Date(membershipExpiresAt) > new Date()){ %>
+                <p>Plan: <strong><%= membershipPlan === "premium" ? "₹199 plan" : "₹99 plan" %></strong></p>
+                <p>Credits remaining: <strong><%= membershipCredits %></strong></p>
+                <p>Expires: <%= new Date(membershipExpiresAt).toLocaleDateString() %></p>
+            <% }else{ %>
+                <p>You do not have an active membership.</p>
+                <a href="/membership">View membership plans</a>
+            <% } %>
+        </section>
+        <% if(isAdmin){ %>
+            <a class="profile-admin-link" href="/admin">Open admin dashboard</a>
+        <% } %>
+        <form action="/auth/logout" method="POST">
+            <button type="submit">Log out</button>
+        </form>
+    </main>
+    <%- include("partials/footer") %>
+</body>
+</html>

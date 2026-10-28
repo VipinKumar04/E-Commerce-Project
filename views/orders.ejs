@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Your Orders</title>
+    <link rel="stylesheet" href="/site.css">
+</head>
+<body class="page-orders">
+    <%- include("partials/header") %>
+
+    <main class="orders-main">
+        <p class="orders-eyebrow">YOUR ACCOUNT</p>
+        <h1>Your orders</h1>
+
+        <% if(orders.length === 0){ %>
+            <section class="orders-empty">
+                <h2>You have no orders yet.</h2>
+                <a href="/products">Browse products</a>
+            </section>
+        <% }else{ %>
+            <div class="orders-list">
+                <% orders.forEach((order)=>{ %>
+                    <article class="order-card">
+                        <div class="order-card-heading">
+                            <div>
+                                <p class="orders-eyebrow">ORDER PLACED</p>
+                                <p><%= order.createdAt.toLocaleString() %></p>
+                            </div>
+                            <div class="order-status">
+                                <p class="orders-eyebrow">PAYMENT STATUS</p>
+                                <p><%= order.paymentStatus %></p>
+                            </div>
+                        </div>
+
+                        <div class="order-identifiers">
+                            <p><strong>Order ID:</strong> <%= order._id %></p>
+                            <p>
+                                <strong>Razorpay order ID:</strong>
+                                <%= order.razorpayOrderId || "Not created" %>
+                            </p>
+                            <p>
+                                <strong>Payment ID:</strong>
+                                <%= order.razorpayPaymentId || "Not available" %>
+                            </p>
+                        </div>
+
+                        <div class="order-items">
+                            <% order.items.forEach((item)=>{ %>
+                                <div class="order-item">
+                                    <img src="<%= item.image %>" alt="<%= item.name %>" loading="lazy">
+                                    <div>
+                                        <h2><%= item.name %></h2>
+                                        <p><%= item.category || "Product" %></p>
+                                        <p>Quantity: <%= item.quantity %></p>
+                                    </div>
+                                    <p>₹<%= item.price * item.quantity %></p>
+                                </div>
+                            <% }) %>
+                        </div>
+
+                        <p class="order-total">
+                            <span>Order total</span>
+                            <strong>₹<%= order.totalAmount %></strong>
+                        </p>
+                        <% if(order.creditsUsed > 0){ %>
+                            <p>Membership credit used: 1 (<%= order.membershipPlan === "premium" ? "10%" : "5%" %> discount, ₹<%= order.membershipDiscount %> saved, free delivery)</p>
+                        <% } %>
+                    </article>
+                <% }) %>
+            </div>
+        <% } %>
+    </main>
+
+    <%- include("partials/footer") %>
+</body>
+</html>
